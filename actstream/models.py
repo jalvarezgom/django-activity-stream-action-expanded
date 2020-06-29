@@ -41,6 +41,13 @@ class Follow(models.Model):
     def __str__(self):
         return '{} -> {} : {}'.format(self.user, self.follow_object, self.flag)
 
+class ActionEvent(models.Model):
+    id = None
+    entity_name = models.CharField(max_length=20)
+    message = models.TextField()
+
+    class Meta:
+        ordering = ('-entity_name',)
 
 class Action(models.Model):
     """
@@ -78,7 +85,11 @@ class Action(models.Model):
     actor_object_id = models.CharField(max_length=255, db_index=True)
     actor = GenericForeignKey('actor_content_type', 'actor_object_id')
 
-    verb = models.CharField(max_length=255, db_index=True)
+    verb = models.ForeignKey(
+        ActionEvent,
+        on_delete=models.CASCADE,
+        db_index=True
+    )
     description = models.TextField(blank=True, null=True)
 
     target_content_type = models.ForeignKey(

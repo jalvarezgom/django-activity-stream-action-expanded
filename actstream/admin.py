@@ -24,6 +24,12 @@ class FollowAdmin(ModelAdmin):
     list_filter = ('user', 'started',)
     raw_id_fields = ('user', 'content_type')
 
+class ActionEventAdmin(ModelAdmin):
+    list_display = ('__str__', 'entity_name', 'message')
+    list_editable = ('message',)
+    list_filter = ('entity_name', 'message',)
+    raw_id_fields = ()
 
 admin.site.register(models.Action, ActionAdmin)
 admin.site.register(models.Follow, FollowAdmin)
+admin.site.register(models.ActionEvent, ActionEventAdmin)

@@ -4,7 +4,7 @@ except ImportError:
     from distutils.core import setup
 from actstream import __version__
 
-setup(name='django-activity-stream',
+setup(name='django-activity-stream-action-expanded',
       version=__version__,
       description='Generate generic activity streams from the actions on your '
       'site. Users can follow any actors\' activities for personalized streams.',
@@ -12,7 +12,7 @@ setup(name='django-activity-stream',
       author='Justin Quick',
       license='BSD 3-Clause',
       author_email='justquick@gmail.com',
-      url='http://github.com/justquick/django-activity-stream',
+      url='https://github.com/jalvarezgom/django-activity-stream-action-expanded',
       packages=['actstream',
                 'actstream.migrations',
                 'actstream.templatetags',
