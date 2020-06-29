@@ -117,7 +117,7 @@ def action_handler(verb, **kwargs):
     newaction = apps.get_model('actstream', 'action')(
         actor_content_type=ContentType.objects.get_for_model(actor),
         actor_object_id=actor.pk,
-        verb=str(verb),
+        verb=verb,
         public=bool(kwargs.pop('public', True)),
         description=kwargs.pop('description', None),
         timestamp=kwargs.pop('timestamp', now())

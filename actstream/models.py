@@ -49,6 +49,9 @@ class ActionEvent(models.Model):
     class Meta:
         ordering = ('-entity_name',)
 
+    def __str__(self):
+        return self.message
+
 class Action(models.Model):
     """
     Action model describing the actor acting out a verb (on an optional
