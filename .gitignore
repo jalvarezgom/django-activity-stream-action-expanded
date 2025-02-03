@@ -9,4 +9,9 @@ __pycache__
 /.coverage
 .idea/
 *.egg-info
-venv/
+db.sqlite3
+runtests/static/
+.envrc
+.ropeproject/
+htmlcov/
+.venv

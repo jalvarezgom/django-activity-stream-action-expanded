@@ -3,6 +3,44 @@
 Changelog
 =========
 
+2.0.1
+-----
+
+  - Added support for Django 5.0 and 5.1
+  - Added support for Python 3.10, 3.11 and 3.12
+  - Updated GitHub actions
+
+2.0.0
+-----
+
+  - Added django-rest-framework API support
+  - Follows: delete object-orphaned Follows, based on Django pre_delete signal.
+  - Fix deprecated warning
+
+1.4.2
+----------
+
+  - Django 4.1 support, dropping support for EOL versions of Django - 3.2 and older
+  - Remove JSONField compatibility, extras and autoloading
+
+1.4.0
+------
+
+  - Django 4 support
+  - Russian translations
+  - Bugfix on Action.get_absolute_url
+  - Set AutoField as default for app config
+  - Changing minor version tracking to match Django version
+
+0.10.0
+----------
+  - Replace travis by GitHub actions for CI
+  - BREAKING: Replace JSONField libs with django-jsonfield-backport
+  - Make sure Action.data field is not added twice in ActstreamConfig #463
+  - Django 3.1 support
+  - Feature of having with_user_activity=True parameter when using User Activity Feed (User Stream) url
+  - Document fix
+
 0.9.0
 -----
   - Support django 3.0
@@ -17,7 +55,7 @@ Changelog
   - Drop python 3.4 and 2.7
   - Add django 2.2
   - mysql jsonfied
-  - numerious bug fixes
+  - numerous bug fixes
 
 
 0.7.0
@@ -27,7 +65,7 @@ Changelog
   - Adjusted URLs with new versions of django
   - Improved tox and travis config
   - use render function instead of depricated render_to_response
-  - upgrade package depedencies
+  - upgrade package dependencies
   - django 1.11, 2.0 and 2.1 support added
   - Code clean ups
   - Add optional support for django-mysql's JSONField

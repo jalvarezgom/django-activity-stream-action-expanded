@@ -20,7 +20,7 @@ or get it from source
 Basic app configuration
 -----------------------
 
-Then to add the Django Activity Stream to your project add the app ``actstream``  and ``django.contib.sites`` to your ``INSTALLED_APPS`` and urlconf. In addition to, add the setting ``SITE_ID = 1`` below the installed apps.
+Then to add the Django Activity Stream to your project add the app ``actstream``  and ``django.contrib.sites`` to your ``INSTALLED_APPS`` and urlconf. In addition to, add the setting ``SITE_ID = 1`` below the installed apps.
 
 
 .. code-block:: python
@@ -46,19 +46,6 @@ Add the activity urls to your urlconf
 
 The activity urls are not required for basic usage but provide activity :ref:`feeds` and handle following, unfollowing and querying of followers.
 
-
-Add extra data to actions
--------------------------
-
-If you want to use custom data on your actions, then make sure you have `django-jsonfield <https://pypi.org/project/django-jsonfield/>`_ installed
-
-.. code-block:: bash
-
-    $ pip install django-activity-stream[jsonfield]
-
-You can learn more at :ref:`custom-data`
-
-
 Supported Environments
 ----------------------
 
@@ -73,14 +60,13 @@ Make sure to pick the version of Django and django-activity-stream that supports
 Python
 ******
 
-* **Python 2**: 2.7
-* **Python 3**: 3.4, 3.5 and 3.6
-* **PyPy**: 2 and 3
+* **Python 3**: 3.8 to 3.12
+* **PyPy**: 3
 
 Django
 ******
 
-* **Django**: 1.11, 2.0 and 2.1
+* **Django**: 3.2+ only
 
 Databases
 *********

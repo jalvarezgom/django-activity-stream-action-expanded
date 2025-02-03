@@ -1,0 +1,17 @@
+version: "3.5"
+
+services:
+    django:
+        build: .
+        command: sh -c "./manage.py migrate && ./manage.py collectstatic --noinput && ./manage.py runserver_plus 0.0.0.0:8000"
+        volumes:
+            - ./runtests:/app:rw
+            - ./actstream:/app/actstream:cached
+        environment:
+            DATABASE_ENGINE: file
+            GITHUB_WORKFLOW: ok
+            DJANGO_SETTINGS_MODULE: settings
+            PYTHONPATH: /app
+        restart: unless-stopped
+        ports:
+          - 8000:8000

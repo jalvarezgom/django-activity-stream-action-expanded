@@ -7,7 +7,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.syndication.views import Feed, add_domain
 from django.contrib.sites.models import Site
 from django.utils.encoding import force_str
-from django.utils import datetime_safe
 from django.views.generic import View
 from django.http import HttpResponse, Http404
 from django.urls import reverse
@@ -15,11 +14,12 @@ from django.urls import reverse
 from actstream.models import Action, model_stream, user_stream, any_stream
 
 
-class AbstractActivityStream(object):
+class AbstractActivityStream:
     """
     Abstract base class for all stream rendering.
     Supports hooks for fetching streams and formatting actions.
     """
+
     def get_stream(self, *args, **kwargs):
         """
         Returns a stream method to use.
@@ -44,9 +44,9 @@ class AbstractActivityStream(object):
         """
         if date is None:
             date = action.timestamp
-        date = datetime_safe.new_datetime(date).strftime('%Y-%m-%d')
+        date = date.strftime('%Y-%m-%d')
         return 'tag:{},{}:{}'.format(Site.objects.get_current().domain, date,
-                                 self.get_url(action, obj, False))
+                                     self.get_url(action, obj, False))
 
     def get_url(self, action, obj=None, domain=True):
         """
@@ -119,6 +119,7 @@ class ActivityStreamsAtomFeed(Atom1Feed):
     """
     Feed rendering class for the v1.0 Atom Activity Stream Spec
     """
+
     def root_attributes(self):
         attrs = super(ActivityStreamsAtomFeed, self).root_attributes()
         attrs['xmlns:activity'] = 'http://activitystrea.ms/spec/1.0/'
@@ -208,6 +209,7 @@ class JSONActivityFeed(AbstractActivityStream, View):
     """
     Feed that generates feeds compatible with the v1.0 JSON Activity Stream spec
     """
+
     def dispatch(self, request, *args, **kwargs):
         return HttpResponse(self.serialize(request, *args, **kwargs),
                             content_type='application/json')
@@ -220,7 +222,7 @@ class JSONActivityFeed(AbstractActivityStream, View):
         }, indent=4 if 'pretty' in request.GET or 'pretty' in request.POST else None)
 
 
-class ModelActivityMixin(object):
+class ModelActivityMixin:
 
     def get_object(self, request, content_type_id):
         return get_object_or_404(ContentType, pk=content_type_id).model_class()
@@ -229,7 +231,7 @@ class ModelActivityMixin(object):
         return model_stream
 
 
-class ObjectActivityMixin(object):
+class ObjectActivityMixin:
 
     def get_object(self, request, content_type_id, object_id):
         ct = get_object_or_404(ContentType, pk=content_type_id)
@@ -243,7 +245,16 @@ class ObjectActivityMixin(object):
         return any_stream
 
 
-class UserActivityMixin(object):
+class StreamKwargsMixin:
+
+    def items(self, request, *args, **kwargs):
+        return self.get_stream()(
+            self.get_object(request, *args, **kwargs),
+            **self.get_stream_kwargs(request)
+        )
+
+
+class UserActivityMixin:
 
     def get_object(self, request):
         if request.user.is_authenticated:
@@ -252,8 +263,14 @@ class UserActivityMixin(object):
     def get_stream(self):
         return user_stream
 
+    def get_stream_kwargs(self, request):
+        stream_kwargs = {}
+        if 'with_user_activity' in request.GET:
+            stream_kwargs['with_user_activity'] = request.GET['with_user_activity'].lower() == 'true'
+        return stream_kwargs
 
-class CustomStreamMixin(object):
+
+class CustomStreamMixin:
     name = None
 
     def get_object(self):
@@ -331,7 +348,7 @@ class AtomObjectActivityFeed(ObjectActivityFeed):
     subtitle = ObjectActivityFeed.description
 
 
-class UserJSONActivityFeed(UserActivityMixin, JSONActivityFeed):
+class UserJSONActivityFeed(UserActivityMixin, StreamKwargsMixin, JSONActivityFeed):
     """
     JSON feed of Activity for a given user (where actions are those that the given user follows).
     """

@@ -1,21 +1,15 @@
 .. _custom-data:
 
-Adding Custom Data to your Actions
-==================================
+Custom Action Data
+==================
+
+In a New Project
+----------------
 
 As of v0.4.4, django-activity-stream now supports adding custom data to any Actions you generate.
 This uses a ``data`` JSONField on every Action where you can insert and delete values at will.
 This behavior is disabled by default but just set ``ACTSTREAM_SETTINGS['USE_JSONFIELD'] = True`` in your
-settings.py to enable it. If you're running Django >= 1.9 and you'd like to use the JSONField included
-with Django, set ``USE_NATIVE_JSONFIELD = True`` in your settings file.
-
-.. note::
-
-  Multiple implementations of the JSONField are supported, depending on which packages are installed:
-
-  - The default and preferred implementation is used by installing **both** `django-jsonfield <https://bitbucket.org/schinckel/django-jsonfield/>`_ and `django-jsonfield-compat <https://github.com/kbussell/django-jsonfield-compat>`_. This is also allowing to use Django's native JSONField as described above.
-
-  - Alternatively you can install **only** `django-mysql <https://github.com/adamchainz/django-mysql>`_ (*requires MySQL 5.7+*) to use its JSONField. Make sure the packages above are **not installed**, as they would be preferred. This can be useful when you are using django-mysql already and want to use the same field for actstream.
+settings.py to enable it.
 
 You can send the custom data as extra keyword arguments to the ``action`` signal.
 
@@ -42,3 +36,28 @@ Even in a template
 .. code-block:: django
 
     You are {{ action.actor }} your quest is {{ action.data.quest }} and your favorite color is {{ action.data.favorite_color }}
+
+Adding to Existing Project
+--------------------------
+
+If you start out your project with ``USE_JSONFIELD=False``, dont worry you can add it afterwards.
+
+Make sure ``USE_JSONFIELD`` is non-existent or set to False then do the initial migration
+
+.. code-block:: bash
+
+    python manage.py migrate actstream 0001
+
+Update the setting
+
+.. code-block:: python
+
+    ACTSTREAM_SETTINGS = {
+        "USE_JSONFIELD": True,
+    }
+
+Then migrate the whole app
+
+.. code-block:: bash
+
+    python manage.py migrate actstream

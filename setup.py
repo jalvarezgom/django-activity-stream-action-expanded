@@ -2,17 +2,18 @@ try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
-from actstream import __version__
+from actstream import __version__, __author__
 
 setup(name='django-activity-stream-action-expanded',
       version=__version__,
       description='Generate generic activity streams from the actions on your '
       'site. Users can follow any actors\' activities for personalized streams.',
       long_description=open('README.rst').read(),
-      author='Justin Quick',
+      author=__author__,
       license='BSD 3-Clause',
-      author_email='justquick@gmail.com',
+      author_email='ja.alvarezgom@gmail.com',
       url='https://github.com/jalvarezgom/django-activity-stream-action-expanded',
+      install_requires=['Django>=3.2'],
       packages=['actstream',
                 'actstream.migrations',
                 'actstream.templatetags',
@@ -30,7 +31,6 @@ setup(name='django-activity-stream-action-expanded',
                    'Programming Language :: Python :: 3',
                    'Topic :: Utilities'],
       extras_require={
-        'jsonfield': ['django-jsonfield>=1.0.1',
-                      'django-jsonfield-compat>=0.4.4'],
+          'drf': ['django-rest-framework', 'rest-framework-generic-relations'],
       },
       )

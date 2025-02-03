@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.timesince import timesince as djtimesince
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
@@ -176,7 +176,7 @@ class Action(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            'actstream.views.detail', [self.pk])
+            'actstream_detail', args=[self.pk])
 
 
 # convenient accessors
